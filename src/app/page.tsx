@@ -1,5 +1,5 @@
-import Image from "next/image";
+import TestUI from "@/components/test-ui/test-ui";
 
 export default function Home() {
-  return <> hoo Hay</>;
+  return <TestUI />;
 }
