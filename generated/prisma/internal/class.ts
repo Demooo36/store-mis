@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.3.0",
   "engineVersion": "9d6ad21cbbceab97458517b147a6a09ff43aa735",
   "activeProvider": "postgresql",
-  "inlineSchema": "// prisma/schema.prisma\n// Define your database models\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// Example models\n\nmodel User {\n  id    Int     @id @default(autoincrement())\n  email String  @unique\n  name  String?\n  posts Post[]\n}\n\nmodel Post {\n  id        Int     @id @default(autoincrement())\n  title     String\n  content   String?\n  published Boolean @default(false)\n  author    User    @relation(fields: [authorId], references: [id])\n  authorId  Int\n}\n",
+  "inlineSchema": "// prisma/schema.prisma\n// Define your database models\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// Stores all system user accounts including Admins, Cashiers, and Customers.\nmodel User {\n  userId    String     @id @default(cuid())\n  username  String     @unique\n  email     String     @unique\n  password  String\n  salt      String\n  role      Roles\n  status    UserStatus\n  createdAt DateTime   @default(now())\n  lastLogin DateTime\n\n  userQRs      UserQR[]\n  loyaltyCards loyaltyCard[]\n  rewardClaims rewardClaims[]\n}\n\n// Provides QR-based identification for customers to enable fast lookup during loyalty transactions.\nmodel UserQR {\n  qrId      String   @id @default(cuid())\n  userId    String   @unique\n  token     String\n  isActive  Boolean  @default(true)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // FK Decleration\n  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)\n}\n\n// Represents the physical or logical branches of the business where loyalty points, sales, and inventory activities occur.\nmodel Store {\n  storeId   String   @id @default(cuid())\n  name      String   @unique\n  address   String\n  timezone  String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\n//Defines the loyalty tier structure of the business.\nmodel LoyaltyTiers {\n  tierId         String @id @default(cuid())\n  name           String @unique\n  requiredPoints Int\n  benefitsJson   Json?\n}\n\nmodel loyaltyCard {\n  loyaltyAccountId String   @id @default(cuid())\n  userId           String\n  tierId           String\n  createdAt        DateTime @default(now())\n  updatedAt        DateTime @updatedAt\n  expirationDate   DateTime\n\n  // FK Decleration\n  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)\n\n  pointsLedgers pointsLedger[]\n}\n\nmodel pointsLedger {\n  pointsLedgerId   String     @id @default(cuid())\n  userId           String\n  storeId          Int\n  loyaltyAccountId String\n  sourceType       SourceType\n  sourceId         String\n  totalPoints      Int\n  pointsDelta      Int\n  details          Json?\n  createdBy        DateTime   @default(now())\n  createdAt        DateTime   @default(now())\n\n  // FK Decleration\n  loyaltyCard loyaltyCard @relation(fields: [loyaltyAccountId], references: [loyaltyAccountId], onDelete: Cascade)\n}\n\nmodel campaigns {\n  campaignId     String         @id @default(cuid())\n  name           String\n  description    String?\n  status         CampaignStatus\n  startAt        DateTime\n  endAt          DateTime\n  pointsRequired Int\n  rewardType     String\n  rewardPayload  Json?\n  expiredInDats  Int?\n  createdBy      DateTime       @default(now())\n  updatedAt      DateTime       @updatedAt\n\n  rewardClaims         rewardClaims[]\n  campaignStampLedgers campaignStampLedger[]\n}\n\nmodel rewardClaims {\n  claimId      String       @id @default(cuid())\n  campaignId   String\n  userId       String\n  status       RewardStatus\n  issuedAt     DateTime     @default(now())\n  expiresAt    DateTime\n  usedAt       DateTime\n  usedIn       String\n  usedInSaleId String\n  metadata     Json\n\n  // FK Decleration\n  user      User      @relation(fields: [userId], references: [userId], onDelete: Cascade)\n  campaigns campaigns @relation(fields: [campaignId], references: [campaignId], onDelete: Cascade)\n}\n\nmodel campaignStampLedger {\n  stampId     String   @id @default(cuid())\n  userId      String\n  campaignId  String\n  stampsDelta Int\n  claimId     String\n  createdAt   DateTime @default(now())\n\n  // FK Decleration\n  campaigns campaigns @relation(fields: [campaignId], references: [campaignId], onDelete: Cascade)\n}\n\nmodel products {\n  productId String   @id @default(cuid())\n  name      String\n  price     Float\n  active    Boolean  @default(true)\n  createdAt DateTime @default(now())\n}\n\nmodel sales {\n  saleId      String   @id @default(cuid())\n  userId      String\n  storeId     String\n  totalAmount Float\n  createdAt   DateTime @default(now())\n}\n\nenum Roles {\n  Admin\n  Cashier\n  Customer\n}\n\nenum UserStatus {\n  Pending\n  Active\n  Rejected\n  Disabled\n}\n\nenum SourceType {\n  manualPurchase\n  redeem\n  void\n  adjust\n}\n\nenum CampaignStatus {\n  draft\n  Active\n  paused\n  ended\n}\n\nenum RewardStatus {\n  pending\n  used\n  expired\n  voided\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"posts\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToUser\"}],\"dbName\":null},\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"published\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"author\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PostToUser\"},{\"name\":\"authorId\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"salt\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Roles\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"UserStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastLogin\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userQRs\",\"kind\":\"object\",\"type\":\"UserQR\",\"relationName\":\"UserToUserQR\"},{\"name\":\"loyaltyCards\",\"kind\":\"object\",\"type\":\"loyaltyCard\",\"relationName\":\"UserToloyaltyCard\"},{\"name\":\"rewardClaims\",\"kind\":\"object\",\"type\":\"rewardClaims\",\"relationName\":\"UserTorewardClaims\"}],\"dbName\":null},\"UserQR\":{\"fields\":[{\"name\":\"qrId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserQR\"}],\"dbName\":null},\"Store\":{\"fields\":[{\"name\":\"storeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timezone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"LoyaltyTiers\":{\"fields\":[{\"name\":\"tierId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requiredPoints\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"benefitsJson\",\"kind\":\"scalar\",\"type\":\"Json\"}],\"dbName\":null},\"loyaltyCard\":{\"fields\":[{\"name\":\"loyaltyAccountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tierId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"expirationDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToloyaltyCard\"},{\"name\":\"pointsLedgers\",\"kind\":\"object\",\"type\":\"pointsLedger\",\"relationName\":\"loyaltyCardTopointsLedger\"}],\"dbName\":null},\"pointsLedger\":{\"fields\":[{\"name\":\"pointsLedgerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"storeId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"loyaltyAccountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sourceType\",\"kind\":\"enum\",\"type\":\"SourceType\"},{\"name\":\"sourceId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"totalPoints\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pointsDelta\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"details\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"loyaltyCard\",\"kind\":\"object\",\"type\":\"loyaltyCard\",\"relationName\":\"loyaltyCardTopointsLedger\"}],\"dbName\":null},\"campaigns\":{\"fields\":[{\"name\":\"campaignId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"CampaignStatus\"},{\"name\":\"startAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"endAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"pointsRequired\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rewardType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rewardPayload\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"expiredInDats\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"rewardClaims\",\"kind\":\"object\",\"type\":\"rewardClaims\",\"relationName\":\"campaignsTorewardClaims\"},{\"name\":\"campaignStampLedgers\",\"kind\":\"object\",\"type\":\"campaignStampLedger\",\"relationName\":\"campaignStampLedgerTocampaigns\"}],\"dbName\":null},\"rewardClaims\":{\"fields\":[{\"name\":\"claimId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"campaignId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"RewardStatus\"},{\"name\":\"issuedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"usedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"usedIn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"usedInSaleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserTorewardClaims\"},{\"name\":\"campaigns\",\"kind\":\"object\",\"type\":\"campaigns\",\"relationName\":\"campaignsTorewardClaims\"}],\"dbName\":null},\"campaignStampLedger\":{\"fields\":[{\"name\":\"stampId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"campaignId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stampsDelta\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"claimId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"campaigns\",\"kind\":\"object\",\"type\":\"campaigns\",\"relationName\":\"campaignStampLedgerTocampaigns\"}],\"dbName\":null},\"products\":{\"fields\":[{\"name\":\"productId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"active\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"sales\":{\"fields\":[{\"name\":\"saleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"storeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"totalAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -187,14 +187,104 @@ export interface PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.post`: Exposes CRUD operations for the **Post** model.
+   * `prisma.userQR`: Exposes CRUD operations for the **UserQR** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Posts
-    * const posts = await prisma.post.findMany()
+    * // Fetch zero or more UserQRS
+    * const userQRS = await prisma.userQR.findMany()
     * ```
     */
-  get post(): Prisma.PostDelegate<ExtArgs, { omit: OmitOpts }>;
+  get userQR(): Prisma.UserQRDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.store`: Exposes CRUD operations for the **Store** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Stores
+    * const stores = await prisma.store.findMany()
+    * ```
+    */
+  get store(): Prisma.StoreDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.loyaltyTiers`: Exposes CRUD operations for the **LoyaltyTiers** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LoyaltyTiers
+    * const loyaltyTiers = await prisma.loyaltyTiers.findMany()
+    * ```
+    */
+  get loyaltyTiers(): Prisma.LoyaltyTiersDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.loyaltyCard`: Exposes CRUD operations for the **loyaltyCard** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LoyaltyCards
+    * const loyaltyCards = await prisma.loyaltyCard.findMany()
+    * ```
+    */
+  get loyaltyCard(): Prisma.loyaltyCardDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.pointsLedger`: Exposes CRUD operations for the **pointsLedger** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PointsLedgers
+    * const pointsLedgers = await prisma.pointsLedger.findMany()
+    * ```
+    */
+  get pointsLedger(): Prisma.pointsLedgerDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.campaigns`: Exposes CRUD operations for the **campaigns** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Campaigns
+    * const campaigns = await prisma.campaigns.findMany()
+    * ```
+    */
+  get campaigns(): Prisma.campaignsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.rewardClaims`: Exposes CRUD operations for the **rewardClaims** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RewardClaims
+    * const rewardClaims = await prisma.rewardClaims.findMany()
+    * ```
+    */
+  get rewardClaims(): Prisma.rewardClaimsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.campaignStampLedger`: Exposes CRUD operations for the **campaignStampLedger** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CampaignStampLedgers
+    * const campaignStampLedgers = await prisma.campaignStampLedger.findMany()
+    * ```
+    */
+  get campaignStampLedger(): Prisma.campaignStampLedgerDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.products`: Exposes CRUD operations for the **products** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Products
+    * const products = await prisma.products.findMany()
+    * ```
+    */
+  get products(): Prisma.productsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.sales`: Exposes CRUD operations for the **sales** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sales
+    * const sales = await prisma.sales.findMany()
+    * ```
+    */
+  get sales(): Prisma.salesDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

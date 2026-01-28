@@ -10,20 +10,183 @@ datasource db {
   provider = "postgresql"
 }
 
-// Example models
-
+// Stores all system user accounts including Admins, Cashiers, and Customers.
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  userId     String    @id @default(cuid())
+  username   String    @unique
+  email      String    @unique
+  password   String
+  salt       String
+  role       Roles
+  status     UserStatus
+  createdAt  DateTime  @default(now())
+  lastLogin  DateTime  
+
+  userQRs UserQR[]
+  loyaltyCards loyaltyCard[]
+  rewardClaims rewardClaims[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+// Provides QR-based identification for customers to enable fast lookup during loyalty transactions.
+model UserQR {
+  qrId   String @id @default(cuid())
+  userId String @unique
+  token  String
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // FK Decleration
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+// Represents the physical or logical branches of the business where loyalty points, sales, and inventory activities occur.
+model Store {
+  storeId String @id @default(cuid())
+  name String @unique
+  address String
+  timezone String
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+//Defines the loyalty tier structure of the business.
+model LoyaltyTiers {
+  tierId String @id @default(cuid())
+  name  String @unique
+  requiredPoints Int
+  benefitsJson Json?
+}
+
+model loyaltyCard {
+  loyaltyAccountId String @id @default(cuid())
+  userId String
+  tierId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+  expirationDate DateTime
+
+  // FK Decleration
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  pointsLedgers pointsLedger[]
+}
+
+model pointsLedger {
+  pointsLedgerId   String @id @default(cuid())
+  userId           String
+  storeId          Int
+  loyaltyAccountId String
+  sourceType       SourceType
+  sourceId         String
+  totalPoints      Int
+  pointsDelta      Int
+  details          Json?
+  createdBy        DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  // FK Decleration
+  loyaltyCard loyaltyCard @relation(fields: [loyaltyAccountId], references: [loyaltyAccountId], onDelete: Cascade)
+
+}
+
+model campaigns {
+  campaignId String @id @default(cuid())
+  name String
+  description String?
+  status CampaignStatus
+  startAt DateTime
+  endAt DateTime
+  pointsRequired Int
+  rewardType String
+  rewardPayload Json?
+  expiredInDats Int?
+  createdBy DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+
+  rewardClaims rewardClaims[]
+  campaignStampLedgers campaignStampLedger[]
+}
+
+
+model rewardClaims {
+  claimId String @id @default(cuid())
+  campaignId String
+  userId String
+  status RewardStatus
+  issuedAt DateTime @default(now())
+  expiresAt DateTime
+  usedAt DateTime
+  usedIn String
+  usedInSaleId String
+  metadata Json
+
+  // FK Decleration
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  campaigns campaigns @relation(fields: [campaignId], references: [campaignId], onDelete: Cascade)
+}
+
+model campaignStampLedger {
+  stampId String @id @default(cuid())
+  userId String
+  campaignId String
+  stampsDelta Int
+  claimId String
+  createdAt DateTime @default(now())
+
+  // FK Decleration
+  campaigns campaigns @relation(fields: [campaignId], references: [campaignId], onDelete: Cascade)
+
+}
+
+model products {
+  productId String @id @default(cuid())
+  name String
+  price Float
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model sales {
+  saleId String @id @default(cuid())
+  userId String
+  storeId String
+  totalAmount Float
+  createdAt DateTime @default(now())
+}
+
+
+enum Roles {
+  Admin
+  Cashier
+  Customer
+}
+
+enum UserStatus {
+  Pending
+  Active
+  Rejected
+  Disabled
+}
+
+
+enum SourceType {
+  manualPurchase
+  redeem
+  void
+  adjust
+}
+
+enum CampaignStatus {
+  draft
+  Active
+  paused
+  ended
+}
+
+enum RewardStatus {
+  pending
+  used
+  expired
+  voided
 }

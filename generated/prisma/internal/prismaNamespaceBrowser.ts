@@ -52,7 +52,16 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Post: 'Post'
+  UserQR: 'UserQR',
+  Store: 'Store',
+  LoyaltyTiers: 'LoyaltyTiers',
+  loyaltyCard: 'loyaltyCard',
+  pointsLedger: 'pointsLedger',
+  campaigns: 'campaigns',
+  rewardClaims: 'rewardClaims',
+  campaignStampLedger: 'campaignStampLedger',
+  products: 'products',
+  sales: 'sales'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -72,23 +81,149 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 
 export const UserScalarFieldEnum = {
-  id: 'id',
+  userId: 'userId',
+  username: 'username',
   email: 'email',
-  name: 'name'
+  password: 'password',
+  salt: 'salt',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt',
+  lastLogin: 'lastLogin'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const PostScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  content: 'content',
-  published: 'published',
-  authorId: 'authorId'
+export const UserQRScalarFieldEnum = {
+  qrId: 'qrId',
+  userId: 'userId',
+  token: 'token',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+export type UserQRScalarFieldEnum = (typeof UserQRScalarFieldEnum)[keyof typeof UserQRScalarFieldEnum]
+
+
+export const StoreScalarFieldEnum = {
+  storeId: 'storeId',
+  name: 'name',
+  address: 'address',
+  timezone: 'timezone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StoreScalarFieldEnum = (typeof StoreScalarFieldEnum)[keyof typeof StoreScalarFieldEnum]
+
+
+export const LoyaltyTiersScalarFieldEnum = {
+  tierId: 'tierId',
+  name: 'name',
+  requiredPoints: 'requiredPoints',
+  benefitsJson: 'benefitsJson'
+} as const
+
+export type LoyaltyTiersScalarFieldEnum = (typeof LoyaltyTiersScalarFieldEnum)[keyof typeof LoyaltyTiersScalarFieldEnum]
+
+
+export const LoyaltyCardScalarFieldEnum = {
+  loyaltyAccountId: 'loyaltyAccountId',
+  userId: 'userId',
+  tierId: 'tierId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  expirationDate: 'expirationDate'
+} as const
+
+export type LoyaltyCardScalarFieldEnum = (typeof LoyaltyCardScalarFieldEnum)[keyof typeof LoyaltyCardScalarFieldEnum]
+
+
+export const PointsLedgerScalarFieldEnum = {
+  pointsLedgerId: 'pointsLedgerId',
+  userId: 'userId',
+  storeId: 'storeId',
+  loyaltyAccountId: 'loyaltyAccountId',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  totalPoints: 'totalPoints',
+  pointsDelta: 'pointsDelta',
+  details: 'details',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+} as const
+
+export type PointsLedgerScalarFieldEnum = (typeof PointsLedgerScalarFieldEnum)[keyof typeof PointsLedgerScalarFieldEnum]
+
+
+export const CampaignsScalarFieldEnum = {
+  campaignId: 'campaignId',
+  name: 'name',
+  description: 'description',
+  status: 'status',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  pointsRequired: 'pointsRequired',
+  rewardType: 'rewardType',
+  rewardPayload: 'rewardPayload',
+  expiredInDats: 'expiredInDats',
+  createdBy: 'createdBy',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CampaignsScalarFieldEnum = (typeof CampaignsScalarFieldEnum)[keyof typeof CampaignsScalarFieldEnum]
+
+
+export const RewardClaimsScalarFieldEnum = {
+  claimId: 'claimId',
+  campaignId: 'campaignId',
+  userId: 'userId',
+  status: 'status',
+  issuedAt: 'issuedAt',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  usedIn: 'usedIn',
+  usedInSaleId: 'usedInSaleId',
+  metadata: 'metadata'
+} as const
+
+export type RewardClaimsScalarFieldEnum = (typeof RewardClaimsScalarFieldEnum)[keyof typeof RewardClaimsScalarFieldEnum]
+
+
+export const CampaignStampLedgerScalarFieldEnum = {
+  stampId: 'stampId',
+  userId: 'userId',
+  campaignId: 'campaignId',
+  stampsDelta: 'stampsDelta',
+  claimId: 'claimId',
+  createdAt: 'createdAt'
+} as const
+
+export type CampaignStampLedgerScalarFieldEnum = (typeof CampaignStampLedgerScalarFieldEnum)[keyof typeof CampaignStampLedgerScalarFieldEnum]
+
+
+export const ProductsScalarFieldEnum = {
+  productId: 'productId',
+  name: 'name',
+  price: 'price',
+  active: 'active',
+  createdAt: 'createdAt'
+} as const
+
+export type ProductsScalarFieldEnum = (typeof ProductsScalarFieldEnum)[keyof typeof ProductsScalarFieldEnum]
+
+
+export const SalesScalarFieldEnum = {
+  saleId: 'saleId',
+  userId: 'userId',
+  storeId: 'storeId',
+  totalAmount: 'totalAmount',
+  createdAt: 'createdAt'
+} as const
+
+export type SalesScalarFieldEnum = (typeof SalesScalarFieldEnum)[keyof typeof SalesScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -99,12 +234,36 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {

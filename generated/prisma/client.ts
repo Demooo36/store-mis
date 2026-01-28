@@ -45,7 +45,52 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model Post
+ * Model UserQR
  * 
  */
-export type Post = Prisma.PostModel
+export type UserQR = Prisma.UserQRModel
+/**
+ * Model Store
+ * 
+ */
+export type Store = Prisma.StoreModel
+/**
+ * Model LoyaltyTiers
+ * 
+ */
+export type LoyaltyTiers = Prisma.LoyaltyTiersModel
+/**
+ * Model loyaltyCard
+ * 
+ */
+export type loyaltyCard = Prisma.loyaltyCardModel
+/**
+ * Model pointsLedger
+ * 
+ */
+export type pointsLedger = Prisma.pointsLedgerModel
+/**
+ * Model campaigns
+ * 
+ */
+export type campaigns = Prisma.campaignsModel
+/**
+ * Model rewardClaims
+ * 
+ */
+export type rewardClaims = Prisma.rewardClaimsModel
+/**
+ * Model campaignStampLedger
+ * 
+ */
+export type campaignStampLedger = Prisma.campaignStampLedgerModel
+/**
+ * Model products
+ * 
+ */
+export type products = Prisma.productsModel
+/**
+ * Model sales
+ * 
+ */
+export type sales = Prisma.salesModel
