@@ -6,9 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+
+    "db:validate": "prisma validate --schema=db/prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=db/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=db/prisma/schema.prisma",
+    "db:deploy": "prisma migrate deploy --schema=db/prisma/schema.prisma",
+    "db:studio": "prisma studio --schema=db/prisma/schema.prisma"
+
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "next": "16.1.4",
     "react": "19.2.3",
     "react-dom": "19.2.3"
@@ -20,6 +28,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
+    "prisma": "^6.19.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
