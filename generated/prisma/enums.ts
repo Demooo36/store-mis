@@ -9,6 +9,52 @@
 * 🟢 You can import this file directly.
 */
 
+export const ActivityAction = {
+  sales: 'sales',
+  refund: 'refund',
+  system: 'system'
+} as const
+
+export type ActivityAction = (typeof ActivityAction)[keyof typeof ActivityAction]
+
+
+export const ActorType = {
+  cashier: 'cashier',
+  customer: 'customer',
+  admin: 'admin',
+  superadmin: 'superadmin'
+} as const
+
+export type ActorType = (typeof ActorType)[keyof typeof ActorType]
+
+
+export const MoveType = {
+  In: 'In',
+  Out: 'Out'
+} as const
+
+export type MoveType = (typeof MoveType)[keyof typeof MoveType]
+
+
+export const PaymentMethod = {
+  Cash: 'Cash',
+  Gcash: 'Gcash',
+  Maya: 'Maya',
+  Debit: 'Debit',
+  Credit: 'Credit'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const DiscountType = {
+  Senior: 'Senior',
+  Student: 'Student'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
 export const Roles = {
   Admin: 'Admin',
   Cashier: 'Cashier',
@@ -56,3 +102,11 @@ export const RewardStatus = {
 } as const
 
 export type RewardStatus = (typeof RewardStatus)[keyof typeof RewardStatus]
+
+
+export const SaleType = {
+  inStore: 'inStore',
+  online: 'online'
+} as const
+
+export type SaleType = (typeof SaleType)[keyof typeof SaleType]

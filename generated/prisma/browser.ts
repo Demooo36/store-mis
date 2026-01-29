@@ -72,3 +72,48 @@ export type products = Prisma.productsModel
  * 
  */
 export type sales = Prisma.salesModel
+/**
+ * Model SaleItems
+ * 
+ */
+export type SaleItems = Prisma.SaleItemsModel
+/**
+ * Model SaleDiscount
+ * 
+ */
+export type SaleDiscount = Prisma.SaleDiscountModel
+/**
+ * Model PaymentRecords
+ * 
+ */
+export type PaymentRecords = Prisma.PaymentRecordsModel
+/**
+ * Model Product
+ * 
+ */
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductStock
+ * 
+ */
+export type ProductStock = Prisma.ProductStockModel
+/**
+ * Model ProductMove
+ * 
+ */
+export type ProductMove = Prisma.ProductMoveModel
+/**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
+ * Model RefundReasons
+ * 
+ */
+export type RefundReasons = Prisma.RefundReasonsModel
+/**
+ * Model superAdmins
+ * 
+ */
+export type superAdmins = Prisma.superAdminsModel

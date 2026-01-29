@@ -28,13 +28,11 @@ export type AggregatePointsLedger = {
 
 export type PointsLedgerAvgAggregateOutputType = {
   storeId: number | null
-  totalPoints: number | null
   pointsDelta: number | null
 }
 
 export type PointsLedgerSumAggregateOutputType = {
   storeId: number | null
-  totalPoints: number | null
   pointsDelta: number | null
 }
 
@@ -45,7 +43,6 @@ export type PointsLedgerMinAggregateOutputType = {
   loyaltyAccountId: string | null
   sourceType: $Enums.SourceType | null
   sourceId: string | null
-  totalPoints: number | null
   pointsDelta: number | null
   createdBy: Date | null
   createdAt: Date | null
@@ -58,7 +55,6 @@ export type PointsLedgerMaxAggregateOutputType = {
   loyaltyAccountId: string | null
   sourceType: $Enums.SourceType | null
   sourceId: string | null
-  totalPoints: number | null
   pointsDelta: number | null
   createdBy: Date | null
   createdAt: Date | null
@@ -71,7 +67,6 @@ export type PointsLedgerCountAggregateOutputType = {
   loyaltyAccountId: number
   sourceType: number
   sourceId: number
-  totalPoints: number
   pointsDelta: number
   details: number
   createdBy: number
@@ -82,13 +77,11 @@ export type PointsLedgerCountAggregateOutputType = {
 
 export type PointsLedgerAvgAggregateInputType = {
   storeId?: true
-  totalPoints?: true
   pointsDelta?: true
 }
 
 export type PointsLedgerSumAggregateInputType = {
   storeId?: true
-  totalPoints?: true
   pointsDelta?: true
 }
 
@@ -99,7 +92,6 @@ export type PointsLedgerMinAggregateInputType = {
   loyaltyAccountId?: true
   sourceType?: true
   sourceId?: true
-  totalPoints?: true
   pointsDelta?: true
   createdBy?: true
   createdAt?: true
@@ -112,7 +104,6 @@ export type PointsLedgerMaxAggregateInputType = {
   loyaltyAccountId?: true
   sourceType?: true
   sourceId?: true
-  totalPoints?: true
   pointsDelta?: true
   createdBy?: true
   createdAt?: true
@@ -125,7 +116,6 @@ export type PointsLedgerCountAggregateInputType = {
   loyaltyAccountId?: true
   sourceType?: true
   sourceId?: true
-  totalPoints?: true
   pointsDelta?: true
   details?: true
   createdBy?: true
@@ -226,7 +216,6 @@ export type PointsLedgerGroupByOutputType = {
   loyaltyAccountId: string
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details: runtime.JsonValue | null
   createdBy: Date
@@ -263,7 +252,6 @@ export type pointsLedgerWhereInput = {
   loyaltyAccountId?: Prisma.StringFilter<"pointsLedger"> | string
   sourceType?: Prisma.EnumSourceTypeFilter<"pointsLedger"> | $Enums.SourceType
   sourceId?: Prisma.StringFilter<"pointsLedger"> | string
-  totalPoints?: Prisma.IntFilter<"pointsLedger"> | number
   pointsDelta?: Prisma.IntFilter<"pointsLedger"> | number
   details?: Prisma.JsonNullableFilter<"pointsLedger">
   createdBy?: Prisma.DateTimeFilter<"pointsLedger"> | Date | string
@@ -278,7 +266,6 @@ export type pointsLedgerOrderByWithRelationInput = {
   loyaltyAccountId?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
   details?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -296,7 +283,6 @@ export type pointsLedgerWhereUniqueInput = Prisma.AtLeast<{
   loyaltyAccountId?: Prisma.StringFilter<"pointsLedger"> | string
   sourceType?: Prisma.EnumSourceTypeFilter<"pointsLedger"> | $Enums.SourceType
   sourceId?: Prisma.StringFilter<"pointsLedger"> | string
-  totalPoints?: Prisma.IntFilter<"pointsLedger"> | number
   pointsDelta?: Prisma.IntFilter<"pointsLedger"> | number
   details?: Prisma.JsonNullableFilter<"pointsLedger">
   createdBy?: Prisma.DateTimeFilter<"pointsLedger"> | Date | string
@@ -311,7 +297,6 @@ export type pointsLedgerOrderByWithAggregationInput = {
   loyaltyAccountId?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
   details?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -333,7 +318,6 @@ export type pointsLedgerScalarWhereWithAggregatesInput = {
   loyaltyAccountId?: Prisma.StringWithAggregatesFilter<"pointsLedger"> | string
   sourceType?: Prisma.EnumSourceTypeWithAggregatesFilter<"pointsLedger"> | $Enums.SourceType
   sourceId?: Prisma.StringWithAggregatesFilter<"pointsLedger"> | string
-  totalPoints?: Prisma.IntWithAggregatesFilter<"pointsLedger"> | number
   pointsDelta?: Prisma.IntWithAggregatesFilter<"pointsLedger"> | number
   details?: Prisma.JsonNullableWithAggregatesFilter<"pointsLedger">
   createdBy?: Prisma.DateTimeWithAggregatesFilter<"pointsLedger"> | Date | string
@@ -346,7 +330,6 @@ export type pointsLedgerCreateInput = {
   storeId: number
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -361,7 +344,6 @@ export type pointsLedgerUncheckedCreateInput = {
   loyaltyAccountId: string
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -374,7 +356,6 @@ export type pointsLedgerUpdateInput = {
   storeId?: Prisma.IntFieldUpdateOperationsInput | number
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -389,7 +370,6 @@ export type pointsLedgerUncheckedUpdateInput = {
   loyaltyAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -403,7 +383,6 @@ export type pointsLedgerCreateManyInput = {
   loyaltyAccountId: string
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -416,7 +395,6 @@ export type pointsLedgerUpdateManyMutationInput = {
   storeId?: Prisma.IntFieldUpdateOperationsInput | number
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -430,7 +408,6 @@ export type pointsLedgerUncheckedUpdateManyInput = {
   loyaltyAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,7 +431,6 @@ export type pointsLedgerCountOrderByAggregateInput = {
   loyaltyAccountId?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
   details?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -463,7 +439,6 @@ export type pointsLedgerCountOrderByAggregateInput = {
 
 export type pointsLedgerAvgOrderByAggregateInput = {
   storeId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
 }
 
@@ -474,7 +449,6 @@ export type pointsLedgerMaxOrderByAggregateInput = {
   loyaltyAccountId?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -487,7 +461,6 @@ export type pointsLedgerMinOrderByAggregateInput = {
   loyaltyAccountId?: Prisma.SortOrder
   sourceType?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -495,7 +468,6 @@ export type pointsLedgerMinOrderByAggregateInput = {
 
 export type pointsLedgerSumOrderByAggregateInput = {
   storeId?: Prisma.SortOrder
-  totalPoints?: Prisma.SortOrder
   pointsDelta?: Prisma.SortOrder
 }
 
@@ -551,7 +523,6 @@ export type pointsLedgerCreateWithoutLoyaltyCardInput = {
   storeId: number
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -564,7 +535,6 @@ export type pointsLedgerUncheckedCreateWithoutLoyaltyCardInput = {
   storeId: number
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -607,7 +577,6 @@ export type pointsLedgerScalarWhereInput = {
   loyaltyAccountId?: Prisma.StringFilter<"pointsLedger"> | string
   sourceType?: Prisma.EnumSourceTypeFilter<"pointsLedger"> | $Enums.SourceType
   sourceId?: Prisma.StringFilter<"pointsLedger"> | string
-  totalPoints?: Prisma.IntFilter<"pointsLedger"> | number
   pointsDelta?: Prisma.IntFilter<"pointsLedger"> | number
   details?: Prisma.JsonNullableFilter<"pointsLedger">
   createdBy?: Prisma.DateTimeFilter<"pointsLedger"> | Date | string
@@ -620,7 +589,6 @@ export type pointsLedgerCreateManyLoyaltyCardInput = {
   storeId: number
   sourceType: $Enums.SourceType
   sourceId: string
-  totalPoints: number
   pointsDelta: number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Date | string
@@ -633,7 +601,6 @@ export type pointsLedgerUpdateWithoutLoyaltyCardInput = {
   storeId?: Prisma.IntFieldUpdateOperationsInput | number
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -646,7 +613,6 @@ export type pointsLedgerUncheckedUpdateWithoutLoyaltyCardInput = {
   storeId?: Prisma.IntFieldUpdateOperationsInput | number
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -659,7 +625,6 @@ export type pointsLedgerUncheckedUpdateManyWithoutLoyaltyCardInput = {
   storeId?: Prisma.IntFieldUpdateOperationsInput | number
   sourceType?: Prisma.EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
   sourceId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalPoints?: Prisma.IntFieldUpdateOperationsInput | number
   pointsDelta?: Prisma.IntFieldUpdateOperationsInput | number
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdBy?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -675,7 +640,6 @@ export type pointsLedgerSelect<ExtArgs extends runtime.Types.Extensions.Internal
   loyaltyAccountId?: boolean
   sourceType?: boolean
   sourceId?: boolean
-  totalPoints?: boolean
   pointsDelta?: boolean
   details?: boolean
   createdBy?: boolean
@@ -690,7 +654,6 @@ export type pointsLedgerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   loyaltyAccountId?: boolean
   sourceType?: boolean
   sourceId?: boolean
-  totalPoints?: boolean
   pointsDelta?: boolean
   details?: boolean
   createdBy?: boolean
@@ -705,7 +668,6 @@ export type pointsLedgerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   loyaltyAccountId?: boolean
   sourceType?: boolean
   sourceId?: boolean
-  totalPoints?: boolean
   pointsDelta?: boolean
   details?: boolean
   createdBy?: boolean
@@ -720,14 +682,13 @@ export type pointsLedgerSelectScalar = {
   loyaltyAccountId?: boolean
   sourceType?: boolean
   sourceId?: boolean
-  totalPoints?: boolean
   pointsDelta?: boolean
   details?: boolean
   createdBy?: boolean
   createdAt?: boolean
 }
 
-export type pointsLedgerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"pointsLedgerId" | "userId" | "storeId" | "loyaltyAccountId" | "sourceType" | "sourceId" | "totalPoints" | "pointsDelta" | "details" | "createdBy" | "createdAt", ExtArgs["result"]["pointsLedger"]>
+export type pointsLedgerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"pointsLedgerId" | "userId" | "storeId" | "loyaltyAccountId" | "sourceType" | "sourceId" | "pointsDelta" | "details" | "createdBy" | "createdAt", ExtArgs["result"]["pointsLedger"]>
 export type pointsLedgerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   loyaltyCard?: boolean | Prisma.loyaltyCardDefaultArgs<ExtArgs>
 }
@@ -750,7 +711,6 @@ export type $pointsLedgerPayload<ExtArgs extends runtime.Types.Extensions.Intern
     loyaltyAccountId: string
     sourceType: $Enums.SourceType
     sourceId: string
-    totalPoints: number
     pointsDelta: number
     details: runtime.JsonValue | null
     createdBy: Date
@@ -1185,7 +1145,6 @@ export interface pointsLedgerFieldRefs {
   readonly loyaltyAccountId: Prisma.FieldRef<"pointsLedger", 'String'>
   readonly sourceType: Prisma.FieldRef<"pointsLedger", 'SourceType'>
   readonly sourceId: Prisma.FieldRef<"pointsLedger", 'String'>
-  readonly totalPoints: Prisma.FieldRef<"pointsLedger", 'Int'>
   readonly pointsDelta: Prisma.FieldRef<"pointsLedger", 'Int'>
   readonly details: Prisma.FieldRef<"pointsLedger", 'Json'>
   readonly createdBy: Prisma.FieldRef<"pointsLedger", 'DateTime'>
