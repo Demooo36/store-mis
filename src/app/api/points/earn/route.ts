@@ -10,81 +10,95 @@ function calcPoints(amountPhp: number) {
 export async function POST(req: NextRequest) {
   try {
     const actor = requireAuth(req);
-    requireRole(actor, ["admin", "cashier"]);
+    requireRole(actor, ["Admin", "Cashier"]);
 
     const body = await req.json();
-    const { token, store_id, amount_php } = body || {};
+    const { token, storeId, amountPhp } = body || {};
 
-    if (!token || !store_id || amount_php == null) {
+    if (!token || !storeId || amountPhp == null) {
       return NextResponse.json(
-        { error: "token, store_id, amount_php are required" },
+        { error: "token, storeId, amountPhp are required" },
         { status: 400 }
       );
     }
 
-    const amount = Number(amount_php);
+    const amount = Number(amountPhp);
     if (!Number.isFinite(amount) || amount < 0) {
-      return NextResponse.json({ error: "amount_php must be a non-negative number" }, { status: 400 });
+      return NextResponse.json(
+        { error: "amountPhp must be a non-negative number" },
+        { status: 400 }
+      );
     }
 
-    // Validate store exists
+    //  Validate store exists
     const store = await prisma.store.findUnique({
-      where: { store_id },
-      select: { store_id: true, name: true },
+      where: { storeId },
+      select: { storeId: true, name: true },
     });
-    if (!store) return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    if (!store) {
+      return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    }
 
-    // Resolve customer by active QR token
-    const qr = await prisma.userQrToken.findFirst({
-      where: { token, active: true },
-      select: { user_id: true },
+    //  Resolve customer via active QR token
+    const qr = await prisma.userQR.findFirst({
+      where: { token, isActive: true },
+      select: { userId: true },
     });
-    if (!qr) return NextResponse.json({ error: "QR token not found/expired" }, { status: 404 });
+    if (!qr) {
+      return NextResponse.json({ error: "QR token not found/expired" }, { status: 404 });
+    }
 
     const customer = await prisma.user.findUnique({
-      where: { user_id: qr.user_id },
-      select: { user_id: true, role: true, status: true },
+      where: { userId: qr.userId },
+      select: { userId: true, role: true, status: true },
     });
-    if (!customer || customer.role !== "customer") {
+    if (!customer || customer.role !== "Customer") {
       return NextResponse.json({ error: "Customer not found" }, { status: 404 });
     }
-    if (customer.status !== "active") {
+    if (customer.status !== "Active") {
       return NextResponse.json({ error: "Customer account not active" }, { status: 403 });
     }
 
-    // Loyalty account (optional but recommended)
-    const loyalty = await prisma.loyaltyCard.findUnique({
-      where: { user_id: customer.user_id },
-      select: { loyalty_account_id: true },
+    //  Get loyalty account (NOT findUnique, since userId isn't unique in loyaltyCard yet)
+    const loyalty = await prisma.loyaltyCard.findFirst({
+      where: { userId: customer.userId },
+      select: { loyaltyAccountId: true },
     });
-    if (!loyalty) return NextResponse.json({ error: "Customer has no loyalty card" }, { status: 409 });
+    if (!loyalty) {
+      return NextResponse.json({ error: "Customer has no loyalty card" }, { status: 409 });
+    }
 
+    //  Calculate points
     const points = calcPoints(amount);
 
-    // You said: 98 pesos => 1 point; 0..49 => 0 points (I will allow 0 and just not write ledger)
     if (points <= 0) {
       return NextResponse.json({
         ok: true,
-        points_earned: 0,
+        pointsEarned: 0,
         message: "Amount below ₱50; no points earned.",
       });
     }
 
+    // Write ledger entry
     const entry = await prisma.pointsLedger.create({
       data: {
-        user_id: customer.user_id,
-        store_id: store.store_id,
-        loyalty_account_id: loyalty.loyalty_account_id,
-        source_type: "manual_purchase",
-        source_id: null,
-        points_delta: points,
-        details: { amount_php: amount, rate: "50php=1pt", rounding: "floor" },
-        created_by: actor.userId,
+        userId: customer.userId,
+        storeId: store.storeId,
+        loyaltyAccountId: loyalty.loyaltyAccountId,
+        sourceType: "manualPurchase",
+        sourceId: null,
+        pointsDelta: points,
+        details: { amountPhp: amount, rate: "50php=1pt", rounding: "floor" },
+        createdBy: actor.userId,
       },
-      select: { points_ledger_id: true, points_delta: true, created_at: true },
+      select: {
+        pointsLedgerId: true,
+        pointsDelta: true,
+        createdAt: true,
+      },
     });
 
-    return NextResponse.json({ ok: true, points_earned: points, ledger_entry: entry });
+    return NextResponse.json({ ok: true, pointsEarned: points, ledgerEntry: entry });
   } catch (e: any) {
     const msg = String(e?.message || "");
     if (msg === "UNAUTHORIZED") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

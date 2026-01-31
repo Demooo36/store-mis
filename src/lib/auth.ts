@@ -2,7 +2,7 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
-export type Role = "admin" | "cashier" | "customer";
+export type Role = "Admin" | "Cashier" | "Customer";
 
 export type AuthUser = {
   userId: string;

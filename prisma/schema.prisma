@@ -2,8 +2,7 @@
 // Define your database models
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -79,13 +78,13 @@ model loyaltyCard {
 model pointsLedger {
   pointsLedgerId   String     @id @default(cuid())
   userId           String
-  storeId          Int
+  storeId          String
   loyaltyAccountId String
   sourceType       SourceType
-  sourceId         String
+  sourceId         String?
   pointsDelta      Int
   details          Json?
-  createdBy        DateTime   @default(now())
+  createdBy        String
   createdAt        DateTime   @default(now())
 
   // FK Decleration
@@ -252,12 +251,13 @@ model superAdmins {
 }
 
 model SystemFeature {
-
-  featureKey  String   @id @db.VarChar(64)
+  feature_key String   @id @db.VarChar(64)
   enabled     Boolean  @default(false)
-  updatedAt   DateTime @default(now()) @updatedAt
-  updatedBy   String?  @db.Uuid
-  updatedBy   User?    @relation(fields: [updated_by], references: [user_id], onDelete: SetNull)
+  updated_at  DateTime @default(now()) @updatedAt
+  updated_by  String?  @map("updated_by") // nullable user_id
+
+  // Prisma-only relation 
+  updatedBy   User?    @relation(fields: [updated_by], references: [userId], onDelete: SetNull)
 
   @@map("system_features")
 }

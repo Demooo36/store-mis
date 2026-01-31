@@ -219,6 +219,7 @@ export type UserWhereInput = {
   rewardClaims?: Prisma.RewardClaimsListRelationFilter
   cashier?: Prisma.SalesListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
+  systemFeaturesUpdated?: Prisma.SystemFeatureListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -236,6 +237,7 @@ export type UserOrderByWithRelationInput = {
   rewardClaims?: Prisma.rewardClaimsOrderByRelationAggregateInput
   cashier?: Prisma.salesOrderByRelationAggregateInput
   activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -256,6 +258,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   rewardClaims?: Prisma.RewardClaimsListRelationFilter
   cashier?: Prisma.SalesListRelationFilter
   activityLogs?: Prisma.ActivityLogListRelationFilter
+  systemFeaturesUpdated?: Prisma.SystemFeatureListRelationFilter
 }, "userId" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -303,6 +306,7 @@ export type UserCreateInput = {
   rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -320,6 +324,7 @@ export type UserUncheckedCreateInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUpdateInput = {
@@ -337,6 +342,7 @@ export type UserUpdateInput = {
   rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -354,6 +360,7 @@ export type UserUncheckedUpdateInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -431,6 +438,11 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -519,6 +531,22 @@ export type UserUpdateOneRequiredWithoutActivityLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActivityLogsInput, Prisma.UserUpdateWithoutActivityLogsInput>, Prisma.UserUncheckedUpdateWithoutActivityLogsInput>
 }
 
+export type UserCreateNestedOneWithoutSystemFeaturesUpdatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedCreateWithoutSystemFeaturesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSystemFeaturesUpdatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSystemFeaturesUpdatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedCreateWithoutSystemFeaturesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSystemFeaturesUpdatedInput
+  upsert?: Prisma.UserUpsertWithoutSystemFeaturesUpdatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSystemFeaturesUpdatedInput, Prisma.UserUpdateWithoutSystemFeaturesUpdatedInput>, Prisma.UserUncheckedUpdateWithoutSystemFeaturesUpdatedInput>
+}
+
 export type UserCreateWithoutUserQRsInput = {
   userId?: string
   username: string
@@ -533,6 +561,7 @@ export type UserCreateWithoutUserQRsInput = {
   rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutUserQRsInput = {
@@ -549,6 +578,7 @@ export type UserUncheckedCreateWithoutUserQRsInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutUserQRsInput = {
@@ -581,6 +611,7 @@ export type UserUpdateWithoutUserQRsInput = {
   rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserQRsInput = {
@@ -597,6 +628,7 @@ export type UserUncheckedUpdateWithoutUserQRsInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutLoyaltyCardsInput = {
@@ -613,6 +645,7 @@ export type UserCreateWithoutLoyaltyCardsInput = {
   rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutLoyaltyCardsInput = {
@@ -629,6 +662,7 @@ export type UserUncheckedCreateWithoutLoyaltyCardsInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutLoyaltyCardsInput = {
@@ -661,6 +695,7 @@ export type UserUpdateWithoutLoyaltyCardsInput = {
   rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLoyaltyCardsInput = {
@@ -677,6 +712,7 @@ export type UserUncheckedUpdateWithoutLoyaltyCardsInput = {
   rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutRewardClaimsInput = {
@@ -693,6 +729,7 @@ export type UserCreateWithoutRewardClaimsInput = {
   loyaltyCards?: Prisma.loyaltyCardCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutRewardClaimsInput = {
@@ -709,6 +746,7 @@ export type UserUncheckedCreateWithoutRewardClaimsInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutRewardClaimsInput = {
@@ -741,6 +779,7 @@ export type UserUpdateWithoutRewardClaimsInput = {
   loyaltyCards?: Prisma.loyaltyCardUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRewardClaimsInput = {
@@ -757,6 +796,7 @@ export type UserUncheckedUpdateWithoutRewardClaimsInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutCashierInput = {
@@ -773,6 +813,7 @@ export type UserCreateWithoutCashierInput = {
   loyaltyCards?: Prisma.loyaltyCardCreateNestedManyWithoutUserInput
   rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutCashierInput = {
@@ -789,6 +830,7 @@ export type UserUncheckedCreateWithoutCashierInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedCreateNestedManyWithoutUserInput
   rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
   activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutCashierInput = {
@@ -821,6 +863,7 @@ export type UserUpdateWithoutCashierInput = {
   loyaltyCards?: Prisma.loyaltyCardUpdateManyWithoutUserNestedInput
   rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCashierInput = {
@@ -837,6 +880,7 @@ export type UserUncheckedUpdateWithoutCashierInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedUpdateManyWithoutUserNestedInput
   rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
   activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutActivityLogsInput = {
@@ -853,6 +897,7 @@ export type UserCreateWithoutActivityLogsInput = {
   loyaltyCards?: Prisma.loyaltyCardCreateNestedManyWithoutUserInput
   rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -869,6 +914,7 @@ export type UserUncheckedCreateWithoutActivityLogsInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedCreateNestedManyWithoutUserInput
   rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
   cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -901,6 +947,7 @@ export type UserUpdateWithoutActivityLogsInput = {
   loyaltyCards?: Prisma.loyaltyCardUpdateManyWithoutUserNestedInput
   rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -917,6 +964,91 @@ export type UserUncheckedUpdateWithoutActivityLogsInput = {
   loyaltyCards?: Prisma.loyaltyCardUncheckedUpdateManyWithoutUserNestedInput
   rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
   cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
+  systemFeaturesUpdated?: Prisma.SystemFeatureUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type UserCreateWithoutSystemFeaturesUpdatedInput = {
+  userId?: string
+  username: string
+  email: string
+  password: string
+  salt: string
+  role: $Enums.Roles
+  status: $Enums.UserStatus
+  createdAt?: Date | string
+  lastLogin: Date | string
+  userQRs?: Prisma.UserQRCreateNestedManyWithoutUserInput
+  loyaltyCards?: Prisma.loyaltyCardCreateNestedManyWithoutUserInput
+  rewardClaims?: Prisma.rewardClaimsCreateNestedManyWithoutUserInput
+  cashier?: Prisma.salesCreateNestedManyWithoutCashierInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutSystemFeaturesUpdatedInput = {
+  userId?: string
+  username: string
+  email: string
+  password: string
+  salt: string
+  role: $Enums.Roles
+  status: $Enums.UserStatus
+  createdAt?: Date | string
+  lastLogin: Date | string
+  userQRs?: Prisma.UserQRUncheckedCreateNestedManyWithoutUserInput
+  loyaltyCards?: Prisma.loyaltyCardUncheckedCreateNestedManyWithoutUserInput
+  rewardClaims?: Prisma.rewardClaimsUncheckedCreateNestedManyWithoutUserInput
+  cashier?: Prisma.salesUncheckedCreateNestedManyWithoutCashierInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutSystemFeaturesUpdatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedCreateWithoutSystemFeaturesUpdatedInput>
+}
+
+export type UserUpsertWithoutSystemFeaturesUpdatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedUpdateWithoutSystemFeaturesUpdatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedCreateWithoutSystemFeaturesUpdatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSystemFeaturesUpdatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSystemFeaturesUpdatedInput, Prisma.UserUncheckedUpdateWithoutSystemFeaturesUpdatedInput>
+}
+
+export type UserUpdateWithoutSystemFeaturesUpdatedInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  salt?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRolesFieldUpdateOperationsInput | $Enums.Roles
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLogin?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQRs?: Prisma.UserQRUpdateManyWithoutUserNestedInput
+  loyaltyCards?: Prisma.loyaltyCardUpdateManyWithoutUserNestedInput
+  rewardClaims?: Prisma.rewardClaimsUpdateManyWithoutUserNestedInput
+  cashier?: Prisma.salesUpdateManyWithoutCashierNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSystemFeaturesUpdatedInput = {
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  salt?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRolesFieldUpdateOperationsInput | $Enums.Roles
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLogin?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userQRs?: Prisma.UserQRUncheckedUpdateManyWithoutUserNestedInput
+  loyaltyCards?: Prisma.loyaltyCardUncheckedUpdateManyWithoutUserNestedInput
+  rewardClaims?: Prisma.rewardClaimsUncheckedUpdateManyWithoutUserNestedInput
+  cashier?: Prisma.salesUncheckedUpdateManyWithoutCashierNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 
@@ -930,6 +1062,7 @@ export type UserCountOutputType = {
   rewardClaims: number
   cashier: number
   activityLogs: number
+  systemFeaturesUpdated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -938,6 +1071,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   rewardClaims?: boolean | UserCountOutputTypeCountRewardClaimsArgs
   cashier?: boolean | UserCountOutputTypeCountCashierArgs
   activityLogs?: boolean | UserCountOutputTypeCountActivityLogsArgs
+  systemFeaturesUpdated?: boolean | UserCountOutputTypeCountSystemFeaturesUpdatedArgs
 }
 
 /**
@@ -985,6 +1119,13 @@ export type UserCountOutputTypeCountActivityLogsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.ActivityLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSystemFeaturesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SystemFeatureWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
@@ -1001,6 +1142,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   rewardClaims?: boolean | Prisma.User$rewardClaimsArgs<ExtArgs>
   cashier?: boolean | Prisma.User$cashierArgs<ExtArgs>
   activityLogs?: boolean | Prisma.User$activityLogsArgs<ExtArgs>
+  systemFeaturesUpdated?: boolean | Prisma.User$systemFeaturesUpdatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1047,6 +1189,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rewardClaims?: boolean | Prisma.User$rewardClaimsArgs<ExtArgs>
   cashier?: boolean | Prisma.User$cashierArgs<ExtArgs>
   activityLogs?: boolean | Prisma.User$activityLogsArgs<ExtArgs>
+  systemFeaturesUpdated?: boolean | Prisma.User$systemFeaturesUpdatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1060,6 +1203,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     rewardClaims: Prisma.$rewardClaimsPayload<ExtArgs>[]
     cashier: Prisma.$salesPayload<ExtArgs>[]
     activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
+    systemFeaturesUpdated: Prisma.$SystemFeaturePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: string
@@ -1470,6 +1614,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   rewardClaims<T extends Prisma.User$rewardClaimsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rewardClaimsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$rewardClaimsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cashier<T extends Prisma.User$cashierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cashierArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$salesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activityLogs<T extends Prisma.User$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  systemFeaturesUpdated<T extends Prisma.User$systemFeaturesUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$systemFeaturesUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SystemFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2013,6 +2158,30 @@ export type User$activityLogsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[]
+}
+
+/**
+ * User.systemFeaturesUpdated
+ */
+export type User$systemFeaturesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SystemFeature
+   */
+  select?: Prisma.SystemFeatureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SystemFeature
+   */
+  omit?: Prisma.SystemFeatureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SystemFeatureInclude<ExtArgs> | null
+  where?: Prisma.SystemFeatureWhereInput
+  orderBy?: Prisma.SystemFeatureOrderByWithRelationInput | Prisma.SystemFeatureOrderByWithRelationInput[]
+  cursor?: Prisma.SystemFeatureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SystemFeatureScalarFieldEnum | Prisma.SystemFeatureScalarFieldEnum[]
 }
 
 /**

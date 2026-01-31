@@ -70,7 +70,8 @@ export const ModelName = {
   ProductMove: 'ProductMove',
   ActivityLog: 'ActivityLog',
   RefundReasons: 'RefundReasons',
-  superAdmins: 'superAdmins'
+  superAdmins: 'superAdmins',
+  SystemFeature: 'SystemFeature'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -342,6 +343,16 @@ export const SuperAdminsScalarFieldEnum = {
 } as const
 
 export type SuperAdminsScalarFieldEnum = (typeof SuperAdminsScalarFieldEnum)[keyof typeof SuperAdminsScalarFieldEnum]
+
+
+export const SystemFeatureScalarFieldEnum = {
+  feature_key: 'feature_key',
+  enabled: 'enabled',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type SystemFeatureScalarFieldEnum = (typeof SystemFeatureScalarFieldEnum)[keyof typeof SystemFeatureScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -139,3 +139,8 @@ export type RefundReasons = Prisma.RefundReasonsModel
  * 
  */
 export type superAdmins = Prisma.superAdminsModel
+/**
+ * Model SystemFeature
+ * 
+ */
+export type SystemFeature = Prisma.SystemFeatureModel
