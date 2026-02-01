@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAuth, requireRole } from "@/lib/auth";
+import { requireSuperAdmin } from "@/lib/auth";
 
 const DEFAULT_FEATURES: Array<{ feature_key: string; enabled: boolean }> = [
   { feature_key: "LOYALTY_CORE", enabled: true },
@@ -12,8 +12,7 @@ const DEFAULT_FEATURES: Array<{ feature_key: string; enabled: boolean }> = [
 
 export async function POST(req: Request) {
   try {
-    const actor = requireAuth(req as any);
-    requireRole(actor, ["Admin"]);
+    requireSuperAdmin(req as any);
 
     // idempotent: create missing rows, do not overwrite existing values
     const existing = await prisma.systemFeature.findMany({
@@ -30,7 +29,7 @@ export async function POST(req: Request) {
       data: toCreate.map((f) => ({
         feature_key: f.feature_key,
         enabled: f.enabled,
-        updated_by: actor.userId,
+        updated_by: null,
       })),
     });
 

@@ -35,3 +35,12 @@ export function requireRole(user: AuthUser, allowed: Role[]) {
     throw new Error("FORBIDDEN");
   }
 }
+
+export function requireSuperAdmin(req: Request | any) {
+  const secret = req?.headers?.get?.("superadminSecret");
+  if (!secret) throw new Error("FORBIDDEN");
+
+  if (secret !== process.env.SUPERADMIN_SECRET) throw new Error("FORBIDDEN");
+
+  return { superAdmin: true };
+}

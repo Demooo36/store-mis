@@ -1,21 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole } from "@/lib/auth";
 
-export async function POST(req: Request) {
+function oneYearFromNow() {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() + 1);
+  return d;
+}
+
+export async function POST(req: NextRequest) {
   try {
-    const actor = requireAuth(req as any);
+    const actor = requireAuth(req);
     requireRole(actor, ["Admin", "Cashier"]);
 
-    const body = await req.json();
-    const { userId, tierId, expirationDate } = body || {};
-
-    if (!userId || !tierId || !expirationDate) {
-      return NextResponse.json(
-        { error: "userId, tierId, expirationDate are required" },
-        { status: 400 }
-      );
-    }
+    const { userId } = await req.json();
+    if (!userId) return NextResponse.json({ error: "userId is required" }, { status: 400 });
 
     const customer = await prisma.user.findUnique({
       where: { userId },
@@ -28,25 +27,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Customer account not active" }, { status: 403 });
     }
 
-    // Prevent duplicate loyalty accounts for same user (since schema doesn't enforce uniqueness yet)
     const existing = await prisma.loyaltyCard.findFirst({
       where: { userId },
       select: { loyaltyAccountId: true },
     });
-    if (existing) {
-      return NextResponse.json({ error: "Customer already has a loyalty card" }, { status: 409 });
+    if (existing) return NextResponse.json({ error: "Customer already has a loyalty card" }, { status: 409 });
+
+    // Lowest tier = smallest requiredPoints
+    const lowestTier = await prisma.loyaltyTiers.findFirst({
+      orderBy: { requiredPoints: "asc" },
+      select: { tierId: true },
+    });
+    if (!lowestTier) {
+      return NextResponse.json({ error: "No tiers configured" }, { status: 409 });
     }
 
     const card = await prisma.loyaltyCard.create({
       data: {
         userId,
-        tierId,
-        expirationDate: new Date(expirationDate),
+        tierId: lowestTier.tierId,
+        expirationDate: oneYearFromNow(),
       },
       select: { loyaltyAccountId: true, userId: true, tierId: true, expirationDate: true, createdAt: true },
     });
 
-    return NextResponse.json({ ok: true, card });
+    return NextResponse.json({ ok: true, card }, { status: 201 });
   } catch (e: any) {
     const msg = String(e?.message || "");
     if (msg === "UNAUTHORIZED") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

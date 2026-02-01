@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAuth, requireRole } from "@/lib/auth";
+import { requireSuperAdmin } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ feature_key: string }> }) {
   try {
-    const actor = requireAuth(req);
-    requireRole(actor, ["Admin"]);
+    requireSuperAdmin(req as any);
 
     const { feature_key } = await ctx.params;
 
@@ -20,7 +19,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ feature_k
       where: { feature_key },
       data: {
         enabled,
-        updated_by: actor.userId,
+        updated_by: null,
       },
       select: {
         feature_key: true,
