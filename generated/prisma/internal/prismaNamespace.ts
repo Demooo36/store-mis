@@ -403,7 +403,8 @@ export const ModelName = {
   ProductMove: 'ProductMove',
   ActivityLog: 'ActivityLog',
   RefundReasons: 'RefundReasons',
-  superAdmins: 'superAdmins'
+  superAdmins: 'superAdmins',
+  SystemFeature: 'SystemFeature'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userQR" | "store" | "loyaltyTiers" | "loyaltyCard" | "pointsLedger" | "campaigns" | "rewardClaims" | "campaignStampLedger" | "products" | "sales" | "saleItems" | "saleDiscount" | "paymentRecords" | "product" | "productStock" | "productMove" | "activityLog" | "refundReasons" | "superAdmins"
+    modelProps: "user" | "userQR" | "store" | "loyaltyTiers" | "loyaltyCard" | "pointsLedger" | "campaigns" | "rewardClaims" | "campaignStampLedger" | "products" | "sales" | "saleItems" | "saleDiscount" | "paymentRecords" | "product" | "productStock" | "productMove" | "activityLog" | "refundReasons" | "superAdmins" | "systemFeature"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1903,6 +1904,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SystemFeature: {
+      payload: Prisma.$SystemFeaturePayload<ExtArgs>
+      fields: Prisma.SystemFeatureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemFeatureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemFeatureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        findFirst: {
+          args: Prisma.SystemFeatureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemFeatureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        findMany: {
+          args: Prisma.SystemFeatureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>[]
+        }
+        create: {
+          args: Prisma.SystemFeatureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        createMany: {
+          args: Prisma.SystemFeatureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SystemFeatureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>[]
+        }
+        delete: {
+          args: Prisma.SystemFeatureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        update: {
+          args: Prisma.SystemFeatureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemFeatureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemFeatureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SystemFeatureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>[]
+        }
+        upsert: {
+          args: Prisma.SystemFeatureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemFeaturePayload>
+        }
+        aggregate: {
+          args: Prisma.SystemFeatureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemFeature>
+        }
+        groupBy: {
+          args: Prisma.SystemFeatureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemFeatureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemFeatureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemFeatureCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2195,6 +2270,16 @@ export const SuperAdminsScalarFieldEnum = {
 } as const
 
 export type SuperAdminsScalarFieldEnum = (typeof SuperAdminsScalarFieldEnum)[keyof typeof SuperAdminsScalarFieldEnum]
+
+
+export const SystemFeatureScalarFieldEnum = {
+  feature_key: 'feature_key',
+  enabled: 'enabled',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type SystemFeatureScalarFieldEnum = (typeof SystemFeatureScalarFieldEnum)[keyof typeof SystemFeatureScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2596,6 +2681,7 @@ export type GlobalOmitConfig = {
   activityLog?: Prisma.ActivityLogOmit
   refundReasons?: Prisma.RefundReasonsOmit
   superAdmins?: Prisma.superAdminsOmit
+  systemFeature?: Prisma.SystemFeatureOmit
 }
 
 /* Types for Logging */

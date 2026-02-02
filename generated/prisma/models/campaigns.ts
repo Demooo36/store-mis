@@ -522,10 +522,6 @@ export type CampaignsScalarRelationFilter = {
   isNot?: Prisma.campaignsWhereInput
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumCampaignStatusFieldUpdateOperationsInput = {
   set?: $Enums.CampaignStatus
 }
