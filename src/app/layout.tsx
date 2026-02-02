@@ -3,8 +3,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Inter } from "next/font/google";
+import NavHeader from "@/components/layout/nav-header";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Store MIS",
@@ -27,9 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <div className="fixed right-4 top-1/2 z-50 -translate-y-1/2">
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
         </ThemeProvider>
       </body>
     </html>

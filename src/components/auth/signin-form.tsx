@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { signInSchema, type SignInInput } from "@/lib/validations";
+import TestLogo from "../test/test-logo";
 
 export function SignInForm() {
   const [form, setForm] = useState<SignInInput>({
@@ -59,9 +60,7 @@ export function SignInForm() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-center items-center w-full">
-        <div className="bg-gray-200 py-10 px-5">
-          <h1 className="text-center">STORIFY LOGO</h1>
-        </div>
+        <TestLogo />
       </div>
       <Card>
         <CardHeader className="text-center">

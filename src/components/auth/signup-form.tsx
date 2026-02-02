@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { signUpSchema, type SignUpInput } from "@/lib/validations";
 
 import { useState } from "react";
+import TestLogo from "../test/test-logo";
 
 export function SignUpForm() {
   const getFieldError = (
@@ -100,9 +101,7 @@ export function SignUpForm() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-center items-center w-full">
-        <div className="bg-gray-200 py-10 px-5">
-          <h1 className="text-center">STORIFY LOGO</h1>
-        </div>
+        <TestLogo />
       </div>
       <Card>
         <CardHeader className="text-center">
