@@ -1,125 +1,186 @@
 "use client";
-import { useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { signUpSchema, type SignUpInput } from "@/lib/validations";
+
+import { useState } from "react";
 
 export function SignUpForm() {
-  const [form, setForm] = useState({
+  const getFieldError = (
+    nextForm: SignUpInput,
+    key: "fullName" | "email" | "password" | "confirmPassword",
+  ) => {
+    const result = signUpSchema.safeParse(nextForm);
+    if (result.success) {
+      return undefined;
+    }
+
+    const issue = result.error.issues.find((i) => i.path[0] === key);
+    return issue?.message;
+  };
+
+  const handleChange =
+    (key: "fullName" | "email" | "password" | "confirmPassword") =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const nextForm = { ...form, [key]: event.target.value };
+      setForm(nextForm);
+      setError((prev) => {
+        const nextError = { ...prev, [key]: getFieldError(nextForm, key) };
+        if (key === "password") {
+          nextError.confirmPassword = getFieldError(
+            nextForm,
+            "confirmPassword",
+          );
+        }
+        return nextError;
+      });
+    };
+  const [form, setForm] = useState<SignUpInput>({
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [show, setShow] = useState({ password: false, confirm: false });
-  const toggleShow = (key: "password" | "confirm") =>
-    setShow((prev) => ({ ...prev, [key]: !prev[key] }));
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState<{
+    fullName?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+  }>({});
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const result = signUpSchema.safeParse(form);
+    if (!result.success) {
+      const fullNameIssue = result.error.issues.find(
+        (i) => i.path[0] === "fullName",
+      );
+      const emailIssue = result.error.issues.find((i) => i.path[0] === "email");
+      const passwordIssue = result.error.issues.find(
+        (i) => i.path[0] === "password",
+      );
+      const confirmPasswordIssue = result.error.issues.find(
+        (i) => i.path[0] === "confirmPassword",
+      );
+
+      setError({
+        fullName: fullNameIssue?.message,
+        email: emailIssue?.message,
+        password: passwordIssue?.message,
+        confirmPassword: confirmPasswordIssue?.message,
+      });
+      return;
+    }
+
+    if (result.success) {
+      setError({});
+    }
+    console.log(form.fullName);
     console.log(form.email);
     console.log(form.password);
     console.log(form.confirmPassword);
-  };
+  }
 
   return (
-    <div className="flex flex-col gap-2">
-      <form onSubmit={handleSubmit}>
-        <FieldGroup>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xl font-bold">Create your account</h1>
-          </div>
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              required
-              value={form.email}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, email: event.target.value }))
-              }
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <div className="relative">
-              <Input
-                id="password"
-                type={show.password ? "text" : "password"}
-                placeholder="Password"
-                required
-                className="pr-10"
-                value={form.password}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, password: e.target.value }))
-                }
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                className="absolute right-1 top-1/2 -translate-y-1/2"
-                onClick={() => toggleShow("password")}
-                aria-label={show.password ? "Hide password" : "Show password"}
-                aria-pressed={show.password}
-              >
-                {show.password ? <EyeOff /> : <Eye />}
-              </Button>
-            </div>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
-            <div className="relative">
-              <Input
-                id="confirm-password"
-                type={show.confirm ? "text" : "password"}
-                placeholder="Password"
-                required
-                className="pr-10"
-                value={form.confirmPassword}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    confirmPassword: e.target.value,
-                  }))
-                }
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                className="absolute right-1 top-1/2 -translate-y-1/2"
-                onClick={() => toggleShow("confirm")}
-                aria-label={show.confirm ? "Hide password" : "Show password"}
-                aria-pressed={show.confirm}
-              >
-                {show.confirm ? <EyeOff /> : <Eye />}
-              </Button>
-            </div>
-          </Field>
-          <Field>
-            <Button type="submit">Sign Up</Button>
-          </Field>
-        </FieldGroup>
-      </form>
-      <FieldDescription className="px-6 text-center [&>a]:no-underline">
-        Already have an account? {""}
-        <Link className="font-bold" href="/auth/signin">
-          Login
-        </Link>
-      </FieldDescription>
-      <FieldDescription className="px-6 text-center text-stone-400">
-        By continuing, you agree to Storify's <a href="#">Terms of Service</a>{" "}
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-center items-center w-full">
+        <div className="bg-gray-200 py-10 px-5">
+          <h1 className="text-center">STORIFY LOGO</h1>
+        </div>
+      </div>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Create your account</CardTitle>
+          <CardDescription>
+            Enter your email below to create your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
+                <Input
+                  id="fullName"
+                  type="text"
+                  placeholder="John Doe"
+                  required
+                  value={form.fullName}
+                  onChange={handleChange("fullName")}
+                />
+                <FieldError>{error.fullName}</FieldError>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                  value={form.email}
+                  onChange={handleChange("email")}
+                />
+                <FieldError>{error.email}</FieldError>
+              </Field>
+              <Field>
+                <Field className="grid grid-cols-2 gap-4">
+                  <Field>
+                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <Input
+                      id="password"
+                      type="password"
+                      required
+                      value={form.password}
+                      onChange={handleChange("password")}
+                    />
+                    <FieldError>{error.password}</FieldError>
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="confirm-password">
+                      Confirm Password
+                    </FieldLabel>
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      required
+                      value={form.confirmPassword}
+                      onChange={handleChange("confirmPassword")}
+                    />
+                    <FieldError>{error.confirmPassword}</FieldError>
+                  </Field>
+                </Field>
+                <FieldDescription>
+                  Must be at least 8 characters long.
+                </FieldDescription>
+              </Field>
+              <Field>
+                <Button type="submit">Create Account</Button>
+                <FieldDescription className="text-center">
+                  Already have an account? <a href="/auth/signin">Sign In</a>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+      <FieldDescription className="px-6 text-center">
+        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>

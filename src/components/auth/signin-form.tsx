@@ -1,73 +1,123 @@
 "use client";
 
-import { useState } from "react";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { Eye, EyeOff } from "lucide-react";
-import { Input } from "../ui/input";
+import { FormEvent, useState } from "react";
 
-const handleSubmit = () => {
-  console.log("test");
-};
-export default function SignInForm() {
-  const [show, setShow] = useState({
-    password: false,
-    confirm: false,
-  });
-  const [form, setForm] = useState({
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { signInSchema, type SignInInput } from "@/lib/validations";
+
+export function SignInForm() {
+  const [form, setForm] = useState<SignInInput>({
     email: "",
     password: "",
   });
+  const [error, setError] = useState<{ email?: string; password?: string }>({});
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const result = signInSchema.safeParse(form);
+    if (!result.success) {
+      const emailIssue = result.error.issues.find((i) => i.path[0] === "email");
+      const passwordIssue = result.error.issues.find(
+        (i) => i.path[0] === "password",
+      );
+
+      setError({
+        email: emailIssue?.message,
+        password: passwordIssue?.message,
+      });
+      return;
+    }
+
+    if (result.success) {
+      setError({});
+    }
+
+    console.log(form.email);
+    console.log(form.password);
+  }
+
+  const handleChange =
+    (key: "email" | "password") =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({ ...prev, [key]: event.target.value }));
+    };
 
   return (
-    <div className="flex flex-col gap-2">
-      <form>
-        <FieldGroup>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xl font-bold">Sign in to your account</h1>
-          </div>
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input id="email" type="email" placeholder="Email" required />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <div className="relative">
-              <Input
-                id="password"
-                placeholder="Password"
-                required
-                className="pr-10"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                className="absolute right-1 top-1/2 -translate-y-1/2"
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-center items-center w-full">
+        <div className="bg-gray-200 py-10 px-5">
+          <h1 className="text-center">STORIFY LOGO</h1>
+        </div>
+      </div>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Sign in to your account</CardTitle>
+          <CardDescription>
+            Enter your email below to sign in to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="text"
+                  value={form.email}
+                  placeholder="m@example.com"
+                  onChange={handleChange("email")}
+                  required
+                />
+                {error.email ? (
+                  <FieldDescription className="text-red-500 text-sm">
+                    {error.email}
+                  </FieldDescription>
+                ) : null}
+              </Field>
 
-                // aria-label={}
-                // aria-pressed={}
-              >
-                {/* {} */}
-              </Button>
-            </div>
-          </Field>
-          <Field>
-            <Button type="submit">Sign In</Button>
-          </Field>
-        </FieldGroup>
-      </form>
-      <FieldDescription className="px-6 text-center [&>a]:no-underline">
-        Don't have an account? {""}
-        <Link className="text-blue-500 hover:text-blue-500" href="/auth/signup">
-          Sign Up
-        </Link>
-      </FieldDescription>
-      <FieldDescription className="px-6 text-center">
-        By continuing, you agree to Storify's <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+              <Field>
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                </div>
+                <Input
+                  id="password"
+                  value={form.password}
+                  type="password"
+                  onChange={handleChange("password")}
+                  required
+                />
+              </Field>
+              {error.password ? (
+                <FieldDescription className="text-red-500 text-sm">
+                  {error.password}
+                </FieldDescription>
+              ) : null}
+              <Field>
+                <Button type="submit">Sign In</Button>
+
+                <FieldDescription className="text-center">
+                  Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
